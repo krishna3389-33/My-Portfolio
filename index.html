@@ -637,6 +637,15 @@
         </div>
     </footer>
 
+
+    <div class="chat-icon" onclick="toggleChat()">💬</div>
+    <div class="chat-container" id="chat-container">
+        <div class="chat-box" id="chat-box"></div>
+        <input type="text" class="chat-input" id="user-input" placeholder="Ask something..." onkeypress="handleKeyPress(event)">
+    </div>
+
+
+
     <!--==================== SCROLL TOP ====================-->
     <a href="#" class="scrollup" id="scroll-up">
         <i class="uil uil-arrow-up scrollup__icon"></i>
@@ -648,6 +657,60 @@
 
     <!--==================== MAIN JS ====================-->
     <script src="./packages/js/main.js"></script>
+
+   
+    <script>
+        const responses = {
+            "hello": "Hello! I am Krishna's personal chatbot. How can I help?",
+            "who are you": "I am a chatbot designed to provide information about Krishna.",
+            "what is your name": "My name is Krishna's Chatbot.",
+            "tell me about krishna": "Krishna is a Full Stack Developer and Data Scientist with 3+ years of experience.",
+            "skills": "Krishna's skills include Python, SQL, Web Development, and Data Science.",
+            "experience": "Krishna has worked in 2+ companies and completed multiple projects.",
+            "education": "Krishna holds a degree in Computer Science and has completed various certifications.",
+            "projects": "Krishna has worked on AI-powered applications, full-stack web development, and data analysis projects.",
+            "contact": "You can reach Krishna via LinkedIn, email, or through this website's contact form.",
+            "hobbies": "Krishna enjoys coding, reading about AI, and exploring new technologies.",
+            "hi": "Hello! I am Krishna's personal chatbot. How can I help?",
+            'connect me':`my contact no: 7620875690
+                          my emali:krishanborude06@gmail.com`
+        };
+
+        function toggleChat() {
+            let chatContainer = document.getElementById("chat-container");
+            chatContainer.style.display = chatContainer.style.display === "none" || chatContainer.style.display === "" ? "block" : "none";
+        }
+
+        function sendMessage() {
+            let userInput = document.getElementById("user-input").value.toLowerCase();
+            let chatBox = document.getElementById("chat-box");
+            if (userInput.trim() === "") return;
+
+            chatBox.innerHTML += `<p><strong>You:</strong> ${userInput}</p>`;
+            let botResponse = responses[userInput] || "Sorry, I can only answer questions about Krishna.";
+            chatBox.innerHTML += `<p><strong>Bot:</strong> ${botResponse}</p>`;
+            
+            // Save chat history
+            let chatHistory = localStorage.getItem("chatHistory") || "";
+            chatHistory += `<p><strong>You:</strong> ${userInput}</p><p><strong>Bot:</strong> ${botResponse}</p>`;
+            localStorage.setItem("chatHistory", chatHistory);
+            
+            document.getElementById("user-input").value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+
+        // Load chat history on page load
+        window.onload = function() {
+            let chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML = localStorage.getItem("chatHistory") || "";
+        };
+    </script>
 </body>
 
 </html>
